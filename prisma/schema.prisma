@@ -1,0 +1,337 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ResourceType {
+  PDF
+  DRIVE
+  DOC
+  ARTICLE
+  OTHER
+}
+
+enum VoteTargetType {
+  REVIEW
+  NOTE_RESOURCE
+  EXAM_TIP
+  COMMENT
+}
+
+enum ReportTargetType {
+  REVIEW
+  NOTE_RESOURCE
+  EXAM_TIP
+  COMMENT
+  SUBJECT
+  USER
+}
+
+enum ReportStatus {
+  OPEN
+  REVIEWED
+  RESOLVED
+}
+
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum SubjectType {
+  REQUIRED
+  REQUIRED_ELECTIVE
+}
+
+enum SubjectSeason {
+  FALL
+  SPRING
+  ANY
+}
+
+enum ProgressStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model University {
+  id         String    @id @default(cuid())
+  name       String
+  slug       String    @unique
+  createdAt  DateTime  @default(now())
+  faculties  Faculty[]
+  users      User[]
+
+  @@index([name])
+}
+
+model Faculty {
+  id           String      @id @default(cuid())
+  name         String
+  slug         String
+  universityId String
+  createdAt    DateTime    @default(now())
+  university   University  @relation(fields: [universityId], references: [id], onDelete: Cascade)
+  programs     Program[]
+
+  @@unique([universityId, slug])
+  @@index([name])
+}
+
+model Program {
+  id         String    @id @default(cuid())
+  name       String
+  slug       String
+  facultyId  String
+  createdAt  DateTime  @default(now())
+  faculty    Faculty   @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  users      User[]
+  subjects   Subject[]
+
+  @@unique([facultyId, slug])
+  @@index([name])
+}
+
+model Subject {
+  id                  String                @id @default(cuid())
+  name                String
+  code                String?
+  slug                String                @unique
+  description         String
+  credits             Int?
+  recommendedSemester Int?
+  prerequisites       String?
+  subjectType         SubjectType           @default(REQUIRED)
+  subjectSeason       SubjectSeason         @default(ANY)
+  lectureCredits      Int?
+  practiceCredits     Int?
+  lectureHours        Int?
+  practiceHours       Int?
+  curriculumNote      String?
+  programId           String
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  isHidden            Boolean               @default(false)
+  program             Program               @relation(fields: [programId], references: [id], onDelete: Cascade)
+  reviews             SubjectReview[]
+  resources           NoteResource[]
+  examTips            ExamTip[]
+  comments            Comment[]
+  bookmarks           Bookmark[]
+  progressEntries     UserSubjectProgress[]
+
+  @@index([programId])
+  @@index([name])
+  @@index([code])
+  @@index([subjectType, subjectSeason])
+}
+
+model User {
+  id              String                @id @default(cuid())
+  name            String
+  username        String                @unique
+  email           String                @unique
+  passwordHash    String
+  image           String?
+  bio             String?
+  role            UserRole              @default(USER)
+  universityId    String?
+  programId       String?
+  isBanned        Boolean               @default(false)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  university      University?           @relation(fields: [universityId], references: [id], onDelete: SetNull)
+  program         Program?              @relation(fields: [programId], references: [id], onDelete: SetNull)
+  reviews         SubjectReview[]
+  resources       NoteResource[]
+  examTips        ExamTip[]
+  comments        Comment[]
+  bookmarks       Bookmark[]
+  votes           Vote[]
+  reports         Report[]
+  sessions        Session[]
+  progressEntries UserSubjectProgress[]
+  rateLimitBuckets RateLimitBucket[]
+  auditLogs       AuditLog[]
+
+  @@index([createdAt])
+}
+
+model SubjectReview {
+  id               String     @id @default(cuid())
+  title            String
+  content          String
+  difficultyRating Int
+  usefulnessRating Int
+  teacherName      String?
+  semesterTaken    String?
+  passedFirstTry   Boolean?
+  wouldRecommend   Boolean?
+  isHidden         Boolean    @default(false)
+  userId           String
+  subjectId        String
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject          Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  comments         Comment[]
+
+  @@index([subjectId, createdAt])
+  @@index([userId])
+}
+
+model NoteResource {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  url         String
+  type        ResourceType @default(OTHER)
+  isHidden    Boolean      @default(false)
+  userId      String
+  subjectId   String
+  createdAt   DateTime     @default(now())
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     Subject      @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, createdAt])
+  @@index([userId])
+}
+
+model ExamTip {
+  id        String    @id @default(cuid())
+  content   String
+  isHidden  Boolean   @default(false)
+  userId    String
+  subjectId String
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject   Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, createdAt])
+  @@index([userId])
+}
+
+model Comment {
+  id        String         @id @default(cuid())
+  content   String
+  isHidden  Boolean        @default(false)
+  userId    String
+  subjectId String?
+  reviewId  String?
+  createdAt DateTime       @default(now())
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject   Subject?       @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  review    SubjectReview? @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, createdAt])
+  @@index([reviewId, createdAt])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  subjectId String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, subjectId])
+  @@index([subjectId])
+}
+
+model UserSubjectProgress {
+  id        String         @id @default(cuid())
+  userId    String
+  subjectId String
+  status    ProgressStatus
+  plannedSemester Int?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject   Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, subjectId])
+  @@index([userId, status])
+  @@index([userId, plannedSemester])
+}
+
+model Vote {
+  id         String         @id @default(cuid())
+  userId     String
+  targetType VoteTargetType
+  targetId   String
+  value      Int
+  createdAt  DateTime       @default(now())
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, targetType, targetId])
+  @@index([targetType, targetId])
+}
+
+model Report {
+  id         String           @id @default(cuid())
+  userId     String
+  targetType ReportTargetType
+  targetId   String
+  reason     String
+  status     ReportStatus     @default(OPEN)
+  createdAt  DateTime         @default(now())
+  reviewedAt DateTime?
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([targetType, targetId])
+  @@index([status, createdAt])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  lastUsedAt DateTime @default(now())
+  userAgent String?
+  ipAddress String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model RateLimitBucket {
+  id          String   @id @default(cuid())
+  scope       String
+  key         String
+  hits        Int      @default(0)
+  windowStart DateTime @default(now())
+  blockedUntil DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([scope, key])
+  @@index([scope, blockedUntil])
+  @@index([updatedAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  targetType String?
+  targetId   String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+  @@index([targetType, targetId])
+}
