@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 33% 97%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 222 47% 11%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 156 48% 93%;
+    --secondary-foreground: 160 84% 12%;
+    --muted: 210 20% 93%;
+    --muted-foreground: 215 16% 37%;
+    --accent: 41 89% 92%;
+    --accent-foreground: 24 96% 22%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 215 20% 85%;
+    --input: 215 20% 85%;
+    --ring: 222 47% 11%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 222 32% 10%;
+    --foreground: 210 40% 96%;
+    --card: 222 26% 14%;
+    --card-foreground: 210 40% 96%;
+    --popover: 222 26% 14%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 210 40% 96%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 159 36% 18%;
+    --secondary-foreground: 156 73% 89%;
+    --muted: 220 20% 18%;
+    --muted-foreground: 215 20% 72%;
+    --accent: 38 66% 20%;
+    --accent-foreground: 41 88% 82%;
+    --destructive: 0 63% 47%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 18% 24%;
+    --input: 220 18% 24%;
+    --ring: 210 40% 96%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))] antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(253, 230, 138, 0.35), transparent 30%),
+      radial-gradient(circle at top right, rgba(167, 243, 208, 0.3), transparent 28%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(244, 244, 245, 0.95));
+    min-height: 100vh;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      background-image 0.2s ease;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(circle at top left, rgba(180, 83, 9, 0.18), transparent 28%),
+      radial-gradient(circle at top right, rgba(16, 185, 129, 0.14), transparent 25%),
+      linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(8, 15, 28, 1));
+  }
+}
