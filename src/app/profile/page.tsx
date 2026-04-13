@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   BookMarked,
@@ -29,7 +29,7 @@ type ActivityItem =
 
 const KIND_META = {
   review:   { label: "Review",     icon: MessageSquare, color: "bg-blue-500/15 text-blue-600 dark:text-blue-400" },
-  resource: { label: "Forrás",     icon: FileText,      color: "bg-green-500/15 text-green-600 dark:text-green-400" },
+  resource: { label: "ForrĂˇs",     icon: FileText,      color: "bg-green-500/15 text-green-600 dark:text-green-400" },
   tip:      { label: "Vizsgatipp", icon: Lightbulb,     color: "bg-amber-500/15 text-amber-600 dark:text-amber-400" },
 };
 
@@ -65,10 +65,10 @@ export default async function ProfilePage() {
     <SiteShell>
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
 
-        {/* ── BENTO GRID ───────────────────────────────────────────────── */}
+        {/* â”€â”€ BENTO GRID â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
 
-          {/* ── Bio card (large, top-left) ── */}
+          {/* â”€â”€ Bio card (large, top-left) â”€â”€ */}
           <Card className="col-span-full overflow-hidden border-border/60 bg-gradient-to-br from-card via-card to-secondary/20 md:col-span-2 lg:col-span-2">
             <CardContent className="p-7">
               {/* avatar row */}
@@ -79,7 +79,7 @@ export default async function ProfilePage() {
                   <p className="text-sm text-muted-foreground">@{profile.username}</p>
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {profile.role === "ADMIN" && <Badge className="bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30">Admin</Badge>}
-                    {profile.role === "MODERATOR" && <Badge className="bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30">Moderátor</Badge>}
+                    {profile.role === "MODERATOR" && <Badge className="bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30">ModerĂˇtor</Badge>}
                     {profile.university && <Badge variant="outline">{profile.university.name}</Badge>}
                   </div>
                 </div>
@@ -87,7 +87,7 @@ export default async function ProfilePage() {
 
               {/* bio */}
               <p className="mt-5 text-sm leading-7 text-muted-foreground">
-                {profile.bio || "Még nincs bio. A beállításoknál tudod megadni, mi jellemez téged leginkább."}
+                {profile.bio || "MĂ©g nincs bio. A beĂˇllĂ­tĂˇsoknĂˇl tudod megadni, mi jellemez tĂ©ged leginkĂˇbb."}
               </p>
 
               {/* info rows */}
@@ -97,18 +97,18 @@ export default async function ProfilePage() {
                     <GraduationCap className="h-3.5 w-3.5" /> Szak
                   </span>
                   <span className="text-xs font-semibold text-foreground">
-                    {profile.program?.name ?? "Nincs beállítva"}
+                    {profile.program?.name ?? "Nincs beĂˇllĂ­tva"}
                   </span>
                 </div>
                 <div className="flex items-center justify-between py-2">
                   <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                    <Shield className="h-3.5 w-3.5" /> Tag óta
+                    <Shield className="h-3.5 w-3.5" /> Tag Ăłta
                   </span>
                   <span className="text-xs font-semibold text-foreground">{joinDate}</span>
                 </div>
                 <div className="flex items-center justify-between pt-2">
                   <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                    <TrendingUp className="h-3.5 w-3.5" /> Hozzájárulás
+                    <TrendingUp className="h-3.5 w-3.5" /> HozzĂˇjĂˇrulĂˇs
                   </span>
                   <span className="text-xs font-semibold text-foreground">{totalContributions} tartalom</span>
                 </div>
@@ -120,38 +120,38 @@ export default async function ProfilePage() {
                   href="/profile/settings"
                   className="inline-flex items-center gap-1.5 rounded-xl border border-border/60 bg-background/60 px-3 py-2 text-xs font-medium transition-colors hover:border-primary/40 hover:bg-muted"
                 >
-                  <Settings className="h-3.5 w-3.5" /> Beállítások
+                  <Settings className="h-3.5 w-3.5" /> BeĂˇllĂ­tĂˇsok
                 </Link>
                 <Link
                   href="/profile/progress"
                   className="inline-flex items-center gap-1.5 rounded-xl border border-border/60 bg-background/60 px-3 py-2 text-xs font-medium transition-colors hover:border-primary/40 hover:bg-muted"
                 >
-                  <TrendingUp className="h-3.5 w-3.5" /> Haladás
+                  <TrendingUp className="h-3.5 w-3.5" /> HaladĂˇs
                 </Link>
                 <Link
                   href="/profile/sessions"
                   className="inline-flex items-center gap-1.5 rounded-xl border border-border/60 bg-background/60 px-3 py-2 text-xs font-medium transition-colors hover:border-primary/40 hover:bg-muted"
                 >
-                  <Shield className="h-3.5 w-3.5" /> Sessionök
+                  <Shield className="h-3.5 w-3.5" /> SessionĂ¶k
                 </Link>
                 {(profile.role === "ADMIN" || profile.role === "MODERATOR") && (
                   <Link
                     href="/admin/reports"
                     className="inline-flex items-center gap-1.5 rounded-xl border border-purple-500/30 bg-purple-500/10 px-3 py-2 text-xs font-medium text-purple-600 transition-colors hover:bg-purple-500/15 dark:text-purple-400"
                   >
-                    <Shield className="h-3.5 w-3.5" /> Moderáció
+                    <Shield className="h-3.5 w-3.5" /> ModerĂˇciĂł
                   </Link>
                 )}
               </div>
             </CardContent>
           </Card>
 
-          {/* ── Stat tiles ── */}
+          {/* â”€â”€ Stat tiles â”€â”€ */}
           {[
             { label: "Review", value: profile.reviews.length, icon: MessageSquare, accent: "bg-blue-500/10 border-blue-500/20", iconColor: "text-blue-500" },
-            { label: "Forrás", value: profile.resources.length, icon: FileText, accent: "bg-green-500/10 border-green-500/20", iconColor: "text-green-500" },
+            { label: "ForrĂˇs", value: profile.resources.length, icon: FileText, accent: "bg-green-500/10 border-green-500/20", iconColor: "text-green-500" },
             { label: "Vizsgatipp", value: profile.examTips.length, icon: Lightbulb, accent: "bg-amber-500/10 border-amber-500/20", iconColor: "text-amber-500" },
-            { label: "Mentett tárgy", value: profile.bookmarks.length, icon: BookMarked, accent: "bg-primary/10 border-primary/20", iconColor: "text-primary" },
+            { label: "Mentett tĂˇrgy", value: profile.bookmarks.length, icon: BookMarked, accent: "bg-primary/10 border-primary/20", iconColor: "text-primary" },
           ].map((stat) => (
             <Card key={stat.label} className={`border ${stat.accent} bg-card/60`}>
               <CardContent className="flex flex-col gap-4 p-6">
@@ -166,13 +166,13 @@ export default async function ProfilePage() {
             </Card>
           ))}
 
-          {/* ── Kredit progress card ── */}
+          {/* â”€â”€ Kredit progress card â”€â”€ */}
           <Card className="col-span-full border-border/60 md:col-span-2 lg:col-span-2">
             <CardContent className="p-6">
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Kredithaladás</p>
-                  <p className="mt-0.5 font-heading text-xl font-bold">{profile.program?.name ?? "Szak nincs beállítva"}</p>
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">KredithaladĂˇs</p>
+                  <p className="mt-0.5 font-heading text-xl font-bold">{profile.program?.name ?? "Szak nincs beĂˇllĂ­tva"}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-heading text-3xl font-bold">{creditPct}%</p>
@@ -191,9 +191,9 @@ export default async function ProfilePage() {
               {/* sub-stats */}
               <div className="mt-4 grid grid-cols-3 gap-3">
                 {[
-                  { label: "Teljesítve", value: completedSubjects.length, sub: "tárgy" },
-                  { label: "Folyamatban", value: inProgressSubjects.length, sub: "tárgy" },
-                  { label: "Kötelező vál.", value: requiredElectiveSubjects.length, sub: "tárgy" },
+                  { label: "TeljesĂ­tve", value: completedSubjects.length, sub: "tĂˇrgy" },
+                  { label: "Folyamatban", value: inProgressSubjects.length, sub: "tĂˇrgy" },
+                  { label: "KĂ¶telezĹ‘ vĂˇl.", value: requiredElectiveSubjects.length, sub: "tĂˇrgy" },
                 ].map((s) => (
                   <div key={s.label} className="rounded-2xl border border-border/60 bg-background/60 p-3 text-center">
                     <p className="font-heading text-2xl font-bold">{s.value}</p>
@@ -206,20 +206,20 @@ export default async function ProfilePage() {
                 href="/profile/progress"
                 className="mt-4 flex items-center justify-end gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Részletes haladás <ChevronRight className="h-3.5 w-3.5" />
+                RĂ©szletes haladĂˇs <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </CardContent>
           </Card>
 
-          {/* ── Activity feed ── */}
+          {/* â”€â”€ Activity feed â”€â”€ */}
           <Card className="col-span-full border-border/60 lg:col-span-2">
             <CardContent className="p-6">
-              <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">Legfrissebb aktivitás</p>
+              <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">Legfrissebb aktivitĂˇs</p>
 
               {activityFeed.length === 0 ? (
                 <EmptyState
-                  title="Még nincs aktivitás"
-                  description="Ha írsz review-t, tippet vagy feltöltesz forrást, itt rögtön látni fogod."
+                  title="MĂ©g nincs aktivitĂˇs"
+                  description="Ha Ă­rsz review-t, tippet vagy feltĂ¶ltesz forrĂˇst, itt rĂ¶gtĂ¶n lĂˇtni fogod."
                 />
               ) : (
                 <div className="space-y-2">
@@ -252,11 +252,11 @@ export default async function ProfilePage() {
             </CardContent>
           </Card>
 
-          {/* ── Bookmarks ── */}
+          {/* â”€â”€ Bookmarks â”€â”€ */}
           {profile.bookmarks.length > 0 && (
             <Card className="col-span-full border-border/60">
               <CardContent className="p-6">
-                <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">Mentett tárgyak</p>
+                <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">Mentett tĂˇrgyak</p>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {profile.bookmarks.slice(0, 8).map((bm) => (
                     <Link
@@ -276,182 +276,6 @@ export default async function ProfilePage() {
             </Card>
           )}
 
-        </div>
-      </div>
-    </SiteShell>
-  );
-}
-
-
-type ActivityItem =
-  | { id: string; createdAt: Date; subject: { name: string; slug: string }; kind: "review"; preview: string }
-  | { id: string; createdAt: Date; subject: { name: string; slug: string }; kind: "resource"; preview: string }
-  | { id: string; createdAt: Date; subject: { name: string; slug: string }; kind: "tip"; preview: string };
-
-function getActivityLabel(kind: ActivityItem["kind"]) {
-  switch (kind) {
-    case "review":
-      return "Review";
-    case "resource":
-      return "Forrás";
-    case "tip":
-      return "Vizsgatipp";
-  }
-}
-
-export default async function ProfilePage() {
-  const currentUser = await getCurrentUser();
-  if (!currentUser) redirect("/login");
-
-  const profile = await getProfileData(currentUser.id);
-  if (!profile) redirect("/login");
-
-  const totalContributionCount = profile.reviews.length + profile.resources.length + profile.examTips.length;
-  const activityFeed: ActivityItem[] = [
-    ...profile.reviews.map((item) => ({ id: item.id, createdAt: item.createdAt, subject: item.subject, kind: "review" as const, preview: item.title })),
-    ...profile.resources.map((item) => ({ id: item.id, createdAt: item.createdAt, subject: item.subject, kind: "resource" as const, preview: item.title })),
-    ...profile.examTips.map((item) => ({ id: item.id, createdAt: item.createdAt, subject: item.subject, kind: "tip" as const, preview: item.content.slice(0, 96) }))
-  ]
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    .slice(0, 10);
-
-  const requiredSubjects = (profile.program?.subjects ?? []).filter((subject) => subject.subjectType === "REQUIRED");
-  const requiredElectiveSubjects = (profile.program?.subjects ?? []).filter((subject) => subject.subjectType === "REQUIRED_ELECTIVE");
-  const progressMap = Object.fromEntries(profile.progressEntries.map((entry) => [entry.subjectId, entry.status] as const));
-  const completedSubjects = requiredSubjects.filter((subject) => progressMap[subject.id] === "COMPLETED");
-  const inProgressSubjects = requiredSubjects.filter((subject) => progressMap[subject.id] === "IN_PROGRESS");
-  const completedCredits = completedSubjects.reduce((sum, subject) => sum + (subject.credits ?? 0), 0);
-  const totalRequiredCredits = requiredSubjects.reduce((sum, subject) => sum + (subject.credits ?? 0), 0);
-  const remainingCredits = Math.max(totalRequiredCredits - completedCredits, 0);
-
-  return (
-    <SiteShell>
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <Card className="overflow-hidden border-border/80 bg-gradient-to-br from-card via-card to-secondary/20">
-          <CardContent className="p-8">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
-              <div className="flex items-start gap-5">
-                <Avatar name={profile.name} image={profile.image} className="h-24 w-24 text-xl" />
-                <div className="space-y-4">
-                  <div>
-                    <h1 className="font-heading text-4xl font-bold sm:text-5xl">{profile.name}</h1>
-                    <p className="mt-1 text-lg text-muted-foreground">@{profile.username}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {profile.university ? <Badge variant="outline">{profile.university.name}</Badge> : null}
-                    {profile.program ? <Badge variant="outline">{profile.program.name}</Badge> : null}
-                    <Badge>Tag {new Intl.DateTimeFormat("hu-HU").format(profile.createdAt)}</Badge>
-                    {profile.role === "ADMIN" || profile.role === "MODERATOR" ? (
-                      <Link href="/admin/reports">
-                        <Badge>Moderáció</Badge>
-                      </Link>
-                    ) : null}
-                  </div>
-                  <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-                    {profile.bio || "Itt követheted a saját aktivitásaidat, a mentett tárgyaidat és a szakodhoz tartozó haladást."}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex shrink-0 flex-wrap gap-3 lg:justify-end">
-                <Link href="/profile/settings">
-                  <Button>Profil szerkesztése</Button>
-                </Link>
-                <Link href="/profile/progress">
-                  <Button variant="outline">Haladás</Button>
-                </Link>
-                <Link href="/profile/sessions">
-                  <Button variant="outline">Sessionök</Button>
-                </Link>
-              </div>
-            </div>
-
-            <div className="mt-8 grid gap-4 lg:grid-cols-[1.2fr_1fr_1fr]">
-              <div className="rounded-[30px] border border-border/70 bg-primary px-6 py-6 text-primary-foreground">
-                <p className="text-xs uppercase tracking-[0.18em] text-primary-foreground/70">Profil összkép</p>
-                <p className="mt-3 font-heading text-[clamp(2rem,4vw,3rem)] font-bold leading-[0.95]">{totalContributionCount}</p>
-                <p className="mt-2 text-sm text-primary-foreground/80">Ennyi saját review, forrás és vizsgatipp építi már a profilodat.</p>
-              </div>
-              <div className="rounded-[30px] border border-border/70 bg-background/70 p-5">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Mentett tárgyak</p>
-                <p className="mt-3 font-heading text-[clamp(1.8rem,3vw,2.4rem)] font-bold">{profile.bookmarks.length}</p>
-                <p className="mt-2 text-sm text-muted-foreground">Saját későbbre félrerakott tárgylistád.</p>
-              </div>
-              <div className="rounded-[30px] border border-border/70 bg-secondary/35 p-5">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Vizsgatippek</p>
-                <p className="mt-3 font-heading text-[clamp(1.8rem,3vw,2.4rem)] font-bold">{profile.examTips.length}</p>
-                <p className="mt-2 text-sm text-muted-foreground">Rövid, hasznos kapaszkodók a tárgyoldalakhoz.</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="mt-8 grid gap-6 md:grid-cols-4">
-          <Card><CardContent className="p-6"><p className="text-sm text-muted-foreground">Review-k</p><p className="font-heading text-4xl font-bold">{profile.reviews.length}</p></CardContent></Card>
-          <Card><CardContent className="p-6"><p className="text-sm text-muted-foreground">Feltöltött források</p><p className="font-heading text-4xl font-bold">{profile.resources.length}</p></CardContent></Card>
-          <Card><CardContent className="p-6"><p className="text-sm text-muted-foreground">Vizsgatippek</p><p className="font-heading text-4xl font-bold">{profile.examTips.length}</p></CardContent></Card>
-          <Card><CardContent className="p-6"><p className="text-sm text-muted-foreground">Bookmarkok</p><p className="font-heading text-4xl font-bold">{profile.bookmarks.length}</p></CardContent></Card>
-        </div>
-
-        <div className="mt-8 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-          <Card>
-            <CardHeader className="border-b border-border/60 bg-gradient-to-r from-accent/35 via-transparent to-secondary/20">
-              <CardTitle>Haladás és biztonság</CardTitle>
-              <CardDescription>A nagy tracker külön oldalon van, a session és audit nézet pedig külön security blokkot kapott.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-5 p-6">
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="rounded-[26px] border border-border/70 bg-background/70 p-5">
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Kész kötelező kreditek</p>
-                  <p className="mt-3 font-heading text-3xl font-bold">{completedCredits}</p>
-                </div>
-                <div className="rounded-[26px] border border-border/70 bg-background/70 p-5">
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Folyamatban</p>
-                  <p className="mt-3 font-heading text-3xl font-bold">{inProgressSubjects.length}</p>
-                </div>
-                <div className="rounded-[26px] border border-border/70 bg-background/70 p-5">
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Még kell</p>
-                  <p className="mt-3 font-heading text-3xl font-bold">{remainingCredits}</p>
-                </div>
-              </div>
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="rounded-[26px] border border-border/70 bg-background/70 p-5">
-                  <p className="text-sm text-muted-foreground">Kötelező tárgyak</p>
-                  <p className="mt-2 font-heading text-3xl font-bold">{requiredSubjects.length}</p>
-                </div>
-                <div className="rounded-[26px] border border-border/70 bg-background/70 p-5">
-                  <p className="text-sm text-muted-foreground">Köt. választhatók</p>
-                  <p className="mt-2 font-heading text-3xl font-bold">{requiredElectiveSubjects.length}</p>
-                </div>
-                <div className="rounded-[26px] border border-border/70 bg-background/70 p-5">
-                  <p className="text-sm text-muted-foreground">Session security</p>
-                  <p className="mt-2 font-heading text-3xl font-bold">Aktív</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader><CardTitle>Saját aktivitás</CardTitle></CardHeader>
-            <CardContent className="space-y-3">
-              {activityFeed.length ? (
-                activityFeed.map((item) => (
-                  <Link key={item.id} href={`/subjects/${item.subject.slug}`} className="block rounded-[26px] border border-border bg-card/80 p-4 transition-colors hover:border-primary/40">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant="secondary">{getActivityLabel(item.kind)}</Badge>
-                      <p className="text-xs text-muted-foreground">
-                        {new Intl.DateTimeFormat("hu-HU", { year: "numeric", month: "short", day: "numeric" }).format(item.createdAt)}
-                      </p>
-                    </div>
-                    <p className="mt-3 font-medium">{item.subject.name}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{item.preview}</p>
-                  </Link>
-                ))
-              ) : (
-                <EmptyState title="Még nincs aktivitás" description="Ha írsz review-t, tippet vagy feltöltesz forrást, itt rögtön látni fogod." />
-              )}
-            </CardContent>
-          </Card>
         </div>
       </div>
     </SiteShell>
