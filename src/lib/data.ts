@@ -4,6 +4,27 @@ import { prisma } from "@/lib/prisma";
 import { getSubjectCategory } from "@/lib/subject-groups";
 import { safeAverage } from "@/lib/utils";
 
+export async function getPlatformStats() {
+  const [universities, subjects, reviews, resources, examTips, users] = await Promise.all([
+    prisma.university.count(),
+    prisma.subject.count({ where: { isHidden: false } }),
+    prisma.subjectReview.count({ where: { isHidden: false } }),
+    prisma.noteResource.count({ where: { isHidden: false } }),
+    prisma.examTip.count({ where: { isHidden: false } }),
+    prisma.user.count()
+  ]);
+  return { universities, subjects, reviews, resources, examTips, users };
+}
+
+export async function getRecentReviews(limit = 5) {
+  return prisma.subjectReview.findMany({
+    where: { isHidden: false },
+    include: { subject: { select: { name: true, slug: true } }, user: { select: { name: true, username: true, image: true } } },
+    orderBy: { createdAt: "desc" },
+    take: limit
+  });
+}
+
 export async function getUniversities() {
   return prisma.university.findMany({
     include: {
