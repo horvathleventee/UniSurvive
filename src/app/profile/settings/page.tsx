@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { ChangePasswordForm } from "@/components/forms/change-password-form";
 import { ProfileSettingsForm } from "@/components/forms/profile-settings-form";
+import { ThemeCustomizer } from "@/components/theme-customizer";
 import { SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -87,6 +88,18 @@ export default async function ProfileSettingsPage() {
             </CardContent>
           </Card>
         </div>
+
+        <Card className="mt-8 rounded-[2rem] border-border/70">
+          <CardHeader>
+            <CardTitle>Megjelenés testreszabása</CardTitle>
+            <CardDescription>
+              Válaszd ki a számodra legjobb színsémát a 60‑30‑10 arány alapján — az oldal azonnal alkalmazza a változtatást.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ThemeCustomizer />
+          </CardContent>
+        </Card>
       </div>
     </SiteShell>
   );
