@@ -366,13 +366,13 @@ export async function getModerationReports() {
 
   const [reviews, resources, tips, comments, subjects, users] = await Promise.all([
     reviewIds.length
-      ? prisma.subjectReview.findMany({ where: { id: { in: reviewIds } }, include: { subject: true } })
+      ? prisma.subjectReview.findMany({ where: { id: { in: reviewIds } }, include: { subject: true, user: { select: { id: true, username: true } } } })
       : [],
     resourceIds.length
-      ? prisma.noteResource.findMany({ where: { id: { in: resourceIds } }, include: { subject: true } })
+      ? prisma.noteResource.findMany({ where: { id: { in: resourceIds } }, include: { subject: true, user: { select: { id: true, username: true } } } })
       : [],
-    tipIds.length ? prisma.examTip.findMany({ where: { id: { in: tipIds } }, include: { subject: true } }) : [],
-    commentIds.length ? prisma.comment.findMany({ where: { id: { in: commentIds } }, include: { subject: true, review: { include: { subject: true } } } }) : [],
+    tipIds.length ? prisma.examTip.findMany({ where: { id: { in: tipIds } }, include: { subject: true, user: { select: { id: true, username: true } } } }) : [],
+    commentIds.length ? prisma.comment.findMany({ where: { id: { in: commentIds } }, include: { subject: true, review: { include: { subject: true } }, user: { select: { id: true, username: true } } } }) : [],
     subjectIds.length ? prisma.subject.findMany({ where: { id: { in: subjectIds } } }) : [],
     userIds.length ? prisma.user.findMany({ where: { id: { in: userIds } } }) : []
   ]);
@@ -385,7 +385,9 @@ export async function getModerationReports() {
         targetLabel: target?.title ?? "Törölt review",
         targetPath: target ? `/subjects/${target.subject.slug}` : null,
         targetPreview: target?.content?.slice(0, 180) ?? null,
-        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ"
+        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ",
+        targetUserId: target?.user?.id ?? null,
+        targetUsername: target?.user?.username ?? null
       };
     }
 
@@ -396,7 +398,9 @@ export async function getModerationReports() {
         targetLabel: target?.title ?? "Törölt forrás",
         targetPath: target ? `/subjects/${target.subject.slug}` : null,
         targetPreview: target?.description ?? target?.url ?? null,
-        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ"
+        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ",
+        targetUserId: target?.user?.id ?? null,
+        targetUsername: target?.user?.username ?? null
       };
     }
 
@@ -407,7 +411,9 @@ export async function getModerationReports() {
         targetLabel: target ? target.content.slice(0, 80) : "Törölt tipp",
         targetPath: target ? `/subjects/${target.subject.slug}` : null,
         targetPreview: target?.content ?? null,
-        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ"
+        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ",
+        targetUserId: target?.user?.id ?? null,
+        targetUsername: target?.user?.username ?? null
       };
     }
 
@@ -419,7 +425,9 @@ export async function getModerationReports() {
         targetLabel: target ? target.content.slice(0, 80) : "Törölt komment",
         targetPath: path,
         targetPreview: target?.content ?? null,
-        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ"
+        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ",
+        targetUserId: target?.user?.id ?? null,
+        targetUsername: target?.user?.username ?? null
       };
     }
 
@@ -430,7 +438,9 @@ export async function getModerationReports() {
         targetLabel: target?.name ?? "Törölt tárgy",
         targetPath: target ? `/subjects/${target.slug}` : null,
         targetPreview: target?.description ?? null,
-        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ"
+        targetState: target?.isHidden ? "REJTETT" : "LÁTHATÓ",
+        targetUserId: null,
+        targetUsername: null
       };
     }
 
@@ -440,7 +450,9 @@ export async function getModerationReports() {
       targetLabel: target ? `@${target.username}` : "Törölt felhasználó",
       targetPath: null,
       targetPreview: target?.name ?? null,
-      targetState: target?.isBanned ? "TILTOTT" : "AKTÍV"
+      targetState: target?.isBanned ? "TILTOTT" : "AKTÍV",
+      targetUserId: target?.id ?? null,
+      targetUsername: target?.username ?? null
     };
   });
 }

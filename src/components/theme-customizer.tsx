@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { Check, Moon, Palette, Sun, RotateCcw } from "lucide-react";
@@ -13,7 +13,7 @@ import {
   type ThemePresetId,
 } from "@/components/theme-hydrator";
 
-// ── Preset preview swatches ────────────────────────────────────────────────
+// â”€â”€ Preset preview swatches â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const PRESET_PALETTE: Record<
   ThemePresetId,
   { light: { bg: string; primary: string; accent: string }; dark: { bg: string; primary: string; accent: string } }
@@ -46,7 +46,7 @@ const CUSTOM_DEFAULTS: { bg: RGB; primary: RGB; accent: RGB } = {
   accent:  { r: 251, g: 191, b: 36  },
 };
 
-// ── Helpers ────────────────────────────────────────────────────────────────
+// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function rgbToHex({ r, g, b }: RGB) {
   return "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
 }
@@ -57,7 +57,7 @@ function hexToRgb(hex: string): RGB | null {
   return { r: parseInt(m[0]!, 16), g: parseInt(m[1]!, 16), b: parseInt(m[2]!, 16) };
 }
 
-// ── RgbPicker sub-component ────────────────────────────────────────────────
+// â”€â”€ RgbPicker sub-component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function RgbPicker({
   label,
   badge,
@@ -123,7 +123,7 @@ function RgbPicker({
         </div>
         <label
           className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-background shadow-sm transition-all hover:border-primary/40"
-          title="Szín kiválasztása"
+          title="SzĂ­n kivĂˇlasztĂˇsa"
         >
           <input
             type="color"
@@ -167,7 +167,7 @@ function RgbPicker({
   );
 }
 
-// ── Main ThemeCustomizer ───────────────────────────────────────────────────
+// â”€â”€ Main ThemeCustomizer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function ThemeCustomizer() {
   const [activePreset, setActivePreset] = useState<ExtendedPresetId>("default");
   const [isDark, setIsDark] = useState(false);
@@ -245,9 +245,9 @@ export function ThemeCustomizer() {
 
   return (
     <div className="space-y-8">
-      {/* ── Mode toggle ─────────────────────────────────────────────── */}
+      {/* â”€â”€ Mode toggle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="space-y-3">
-        <p className="text-sm font-semibold">Megjelenési mód</p>
+        <p className="text-sm font-semibold">MegjelenĂ©si mĂłd</p>
         <div className="grid max-w-xs grid-cols-2 gap-3">
 
           {/* Light card */}
@@ -270,7 +270,7 @@ export function ThemeCustomizer() {
               </div>
               <div>
                 <p className="text-sm font-bold text-yellow-900">Nappali</p>
-                <p className="text-[11px] text-yellow-700/70">Világos felületek</p>
+                <p className="text-[11px] text-yellow-700/70">VilĂˇgos felĂĽletek</p>
               </div>
             </div>
             {!isDark && (
@@ -309,8 +309,8 @@ export function ThemeCustomizer() {
                 <Moon className="h-5 w-5 text-indigo-200" />
               </div>
               <div>
-                <p className="text-sm font-bold text-indigo-100">Éjjeli</p>
-                <p className="text-[11px] text-indigo-300/70">Sötét felületek</p>
+                <p className="text-sm font-bold text-indigo-100">Ă‰jjeli</p>
+                <p className="text-[11px] text-indigo-300/70">SĂ¶tĂ©t felĂĽletek</p>
               </div>
             </div>
             {isDark && (
@@ -322,11 +322,11 @@ export function ThemeCustomizer() {
         </div>
       </div>
 
-      {/* ── Tabs ─────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="space-y-5">
         <div className="flex gap-1 w-fit rounded-xl border border-border/60 bg-muted/30 p-1">
           {[
-            { id: "presets" as const, label: "Sémák" },
+            { id: "presets" as const, label: "SĂ©mĂˇk" },
             { id: "custom"  as const, label: "Egyedi", icon: Palette },
           ].map((t) => (
             <button
@@ -348,7 +348,7 @@ export function ThemeCustomizer() {
           ))}
         </div>
 
-        {/* ── Presets tab ──────────────────────────────────────────── */}
+        {/* â”€â”€ Presets tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {tab === "presets" && (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {THEME_PRESETS.map((preset) => {
@@ -414,7 +414,7 @@ export function ThemeCustomizer() {
           </div>
         )}
 
-        {/* ── Custom tab ───────────────────────────────────────────── */}
+        {/* â”€â”€ Custom tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {tab === "custom" && (
           <div className="space-y-5">
             {/* Live preview + apply */}
@@ -450,7 +450,7 @@ export function ThemeCustomizer() {
                   type="button"
                   onClick={resetCustom}
                   className="flex h-9 w-9 items-center justify-center rounded-xl border border-border/60 text-muted-foreground transition-all hover:border-primary/40 hover:text-foreground"
-                  title="Visszaállítás alapértékre"
+                  title="VisszaĂˇllĂ­tĂˇs alapĂ©rtĂ©kre"
                 >
                   <RotateCcw className="h-4 w-4" />
                 </button>
@@ -466,7 +466,7 @@ export function ThemeCustomizer() {
                   {activePreset === "custom" ? (
                     <>
                       <Check className="h-3.5 w-3.5" />
-                      Aktív
+                      AktĂ­v
                     </>
                   ) : (
                     "Alkalmaz"
@@ -477,7 +477,7 @@ export function ThemeCustomizer() {
 
             {activePreset !== "custom" && (
               <p className="text-xs text-muted-foreground">
-                Állítsd be a színeket, majd kattints az{" "}
+                ĂllĂ­tsd be a szĂ­neket, majd kattints az{" "}
                 <span className="font-semibold text-foreground">Alkalmaz</span> gombra.
               </p>
             )}
@@ -485,20 +485,20 @@ export function ThemeCustomizer() {
             {/* 3 RGB pickers */}
             <div className="grid gap-4 md:grid-cols-3">
               <RgbPicker
-                label="Háttér"
-                badge="60% — Fő szín"
+                label="HĂˇttĂ©r"
+                badge="60% â€” FĹ‘ szĂ­n"
                 value={custom.bg}
                 onChange={(v) => updateCustom("bg", v)}
               />
               <RgbPicker
-                label="Elsődleges"
-                badge="30% — Gombok"
+                label="ElsĹ‘dleges"
+                badge="30% â€” Gombok"
                 value={custom.primary}
                 onChange={(v) => updateCustom("primary", v)}
               />
               <RgbPicker
-                label="Hangsúly"
-                badge="10% — Kiemelés"
+                label="HangsĂşly"
+                badge="10% â€” KiemelĂ©s"
                 value={custom.accent}
                 onChange={(v) => updateCustom("accent", v)}
               />
@@ -507,43 +507,7 @@ export function ThemeCustomizer() {
         )}
       </div>
 
-      {/* ── 60-30-10 rule explanation ────────────────────────────────── */}
-      <div className="rounded-2xl border border-border/60 bg-muted/20 p-5">
-        <p className="mb-4 text-sm font-semibold">60 – 30 – 10 szabály</p>
-        <div className="mb-4 overflow-hidden rounded-xl shadow-sm">
-          <div className="flex h-14">
-            {[
-              { w: "60%", bg: previewColors.bg,      fg: previewColors.primary, label: "60%" },
-              { w: "30%", bg: previewColors.primary,  fg: previewColors.bg,      label: "30%" },
-              { w: "10%", bg: previewColors.accent,   fg: previewColors.primary, label: "10%" },
-            ].map((seg) => (
-              <div
-                key={seg.w}
-                className="flex items-center justify-center text-xs font-semibold"
-                style={{ width: seg.w, backgroundColor: seg.bg, color: seg.fg }}
-              >
-                {seg.label}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="grid grid-cols-3 gap-3 text-xs text-muted-foreground">
-          <div>
-            <p className="mb-1 font-semibold text-foreground">Fő szín (60%)</p>
-            <p>Háttér és felületek — semleges, könnyű a szemnek.</p>
-          </div>
-          <div>
-            <p className="mb-1 font-semibold text-foreground">Másodlagos (30%)</p>
-            <p>Szövegek, gombok — kontrasztot teremtenek.</p>
-          </div>
-          <div>
-            <p className="mb-1 font-semibold text-foreground">Hangsúly (10%)</p>
-            <p>Kiemelések, ikonok — figyelemfelkeltő.</p>
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 }
-
-

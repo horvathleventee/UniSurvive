@@ -34,26 +34,14 @@ export async function SiteShell({
           </div>
           <nav className="ml-auto flex items-center gap-2">
             <ThemeToggle />
-            <Link href="/universities">
-              <Button variant="ghost" size="sm">
-                Böngészés
-              </Button>
-            </Link>
             {user ? (
               <>
                 {user.role === "ADMIN" || user.role === "MODERATOR" ? (
-                  <>
-                    <Link href="/admin/reports">
-                      <Button variant="ghost" size="sm">
-                        Reportok
-                      </Button>
-                    </Link>
-                    <Link href="/admin/audit">
-                      <Button variant="ghost" size="sm">
-                        Audit
-                      </Button>
-                    </Link>
-                  </>
+                  <Link href="/admin/reports">
+                    <Button variant="ghost" size="sm">
+                      Moderáció
+                    </Button>
+                  </Link>
                 ) : null}
                 <Link href="/profile">
                   <Button variant="outline" size="sm">

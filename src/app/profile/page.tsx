@@ -54,13 +54,18 @@ export default async function ProfilePage() {
   const requiredElectiveSubjects = (profile.program?.subjects ?? []).filter((s) => s.subjectType === "REQUIRED_ELECTIVE");
   const progressMap = Object.fromEntries(profile.progressEntries.map((e) => [e.subjectId, e.status] as const));
 
-  // Credit calculation includes both REQUIRED and REQUIRED_ELECTIVE subjects
+  // Credit calculation: 180 total = 125 REQUIRED + 45 REQUIRED_ELECTIVE + 10 free elective (not tracked)
+  const CURRICULUM_TOTAL = 180;
+  const FREE_ELECTIVE_CREDITS = 10;
+  const TRACKED_MAX = CURRICULUM_TOTAL - FREE_ELECTIVE_CREDITS; // 170
+
   const completedSubjects = requiredSubjects.filter((s) => progressMap[s.id] === "COMPLETED");
   const completedElectiveSubjects = requiredElectiveSubjects.filter((s) => progressMap[s.id] === "COMPLETED");
   const inProgressSubjects = requiredSubjects.filter((s) => progressMap[s.id] === "IN_PROGRESS");
   const completedCredits = [...completedSubjects, ...completedElectiveSubjects].reduce((sum, s) => sum + (s.credits ?? 0), 0);
-  const totalRequiredCredits = [...requiredSubjects, ...requiredElectiveSubjects].reduce((sum, s) => sum + (s.credits ?? 0), 0);
-  const creditPct = totalRequiredCredits > 0 ? Math.round((completedCredits / totalRequiredCredits) * 100) : 0;
+  const rawTrackedTotal = [...requiredSubjects, ...requiredElectiveSubjects].reduce((sum, s) => sum + (s.credits ?? 0), 0);
+  const totalRequiredCredits = Math.min(rawTrackedTotal, TRACKED_MAX);
+  const creditPct = Math.min(100, totalRequiredCredits > 0 ? Math.round((completedCredits / totalRequiredCredits) * 100) : 0);
 
   const joinDate = new Intl.DateTimeFormat("hu-HU", { year: "numeric", month: "long" }).format(profile.createdAt);
 
@@ -179,7 +184,8 @@ export default async function ProfilePage() {
                 </div>
                 <div className="text-right">
                   <p className="font-heading text-3xl font-bold">{creditPct}%</p>
-                  <p className="text-xs text-muted-foreground">{completedCredits} / {totalRequiredCredits} kredit</p>
+                  <p className="text-xs text-muted-foreground">{completedCredits} / {CURRICULUM_TOTAL} kredit</p>
+                  <p className="text-[10px] text-muted-foreground/70">+{FREE_ELECTIVE_CREDITS} szab. vál. önállóan</p>
                 </div>
               </div>
 

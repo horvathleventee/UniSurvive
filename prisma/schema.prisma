@@ -60,6 +60,12 @@ enum ProgressStatus {
   COMPLETED
 }
 
+enum ModNotificationType {
+  WARNING
+  MOD_MESSAGE
+  BAN_NOTICE
+}
+
 model University {
   id         String    @id @default(cuid())
   name       String
@@ -144,6 +150,7 @@ model User {
   universityId    String?
   programId       String?
   isBanned        Boolean               @default(false)
+  bannedUntil     DateTime?
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
   university      University?           @relation(fields: [universityId], references: [id], onDelete: SetNull)
@@ -157,8 +164,10 @@ model User {
   reports         Report[]
   sessions        Session[]
   progressEntries UserSubjectProgress[]
-  rateLimitBuckets RateLimitBucket[]
-  auditLogs       AuditLog[]
+  rateLimitBuckets          RateLimitBucket[]
+  auditLogs                 AuditLog[]
+  sentModNotifications      ModNotification[] @relation("SentModNotifications")
+  receivedModNotifications  ModNotification[] @relation("ReceivedModNotifications")
 
   @@index([createdAt])
 }
@@ -334,4 +343,19 @@ model AuditLog {
   @@index([actorId, createdAt])
   @@index([action, createdAt])
   @@index([targetType, targetId])
+}
+
+model ModNotification {
+  id          String              @id @default(cuid())
+  recipientId String
+  senderId    String
+  type        ModNotificationType
+  message     String
+  isRead      Boolean             @default(false)
+  createdAt   DateTime            @default(now())
+  recipient   User                @relation("ReceivedModNotifications", fields: [recipientId], references: [id], onDelete: Cascade)
+  sender      User                @relation("SentModNotifications", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, isRead])
+  @@index([recipientId, createdAt])
 }
