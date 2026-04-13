@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   BookMarked,
@@ -29,7 +29,7 @@ type ActivityItem =
 
 const KIND_META = {
   review:   { label: "Review",     icon: MessageSquare, color: "bg-blue-500/15 text-blue-600 dark:text-blue-400" },
-  resource: { label: "ForrĂˇs",     icon: FileText,      color: "bg-green-500/15 text-green-600 dark:text-green-400" },
+  resource: { label: "Forrás",     icon: FileText,      color: "bg-green-500/15 text-green-600 dark:text-green-400" },
   tip:      { label: "Vizsgatipp", icon: Lightbulb,     color: "bg-amber-500/15 text-amber-600 dark:text-amber-400" },
 };
 
@@ -53,10 +53,13 @@ export default async function ProfilePage() {
   const requiredSubjects = (profile.program?.subjects ?? []).filter((s) => s.subjectType === "REQUIRED");
   const requiredElectiveSubjects = (profile.program?.subjects ?? []).filter((s) => s.subjectType === "REQUIRED_ELECTIVE");
   const progressMap = Object.fromEntries(profile.progressEntries.map((e) => [e.subjectId, e.status] as const));
+
+  // Credit calculation includes both REQUIRED and REQUIRED_ELECTIVE subjects
   const completedSubjects = requiredSubjects.filter((s) => progressMap[s.id] === "COMPLETED");
+  const completedElectiveSubjects = requiredElectiveSubjects.filter((s) => progressMap[s.id] === "COMPLETED");
   const inProgressSubjects = requiredSubjects.filter((s) => progressMap[s.id] === "IN_PROGRESS");
-  const completedCredits = completedSubjects.reduce((sum, s) => sum + (s.credits ?? 0), 0);
-  const totalRequiredCredits = requiredSubjects.reduce((sum, s) => sum + (s.credits ?? 0), 0);
+  const completedCredits = [...completedSubjects, ...completedElectiveSubjects].reduce((sum, s) => sum + (s.credits ?? 0), 0);
+  const totalRequiredCredits = [...requiredSubjects, ...requiredElectiveSubjects].reduce((sum, s) => sum + (s.credits ?? 0), 0);
   const creditPct = totalRequiredCredits > 0 ? Math.round((completedCredits / totalRequiredCredits) * 100) : 0;
 
   const joinDate = new Intl.DateTimeFormat("hu-HU", { year: "numeric", month: "long" }).format(profile.createdAt);
@@ -65,10 +68,10 @@ export default async function ProfilePage() {
     <SiteShell>
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
 
-        {/* â”€â”€ BENTO GRID â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── BENTO GRID ────────────────────────────────────── */}
         <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
 
-          {/* â”€â”€ Bio card (large, top-left) â”€â”€ */}
+          {/* ── Bio card (large, top-left) ── */}
           <Card className="col-span-full overflow-hidden border-border/60 bg-gradient-to-br from-card via-card to-secondary/20 md:col-span-2 lg:col-span-2">
             <CardContent className="p-7">
               {/* avatar row */}
@@ -79,7 +82,7 @@ export default async function ProfilePage() {
                   <p className="text-sm text-muted-foreground">@{profile.username}</p>
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {profile.role === "ADMIN" && <Badge className="bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30">Admin</Badge>}
-                    {profile.role === "MODERATOR" && <Badge className="bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30">ModerĂˇtor</Badge>}
+                    {profile.role === "MODERATOR" && <Badge className="bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30">Moderátor</Badge>}
                     {profile.university && <Badge variant="outline">{profile.university.name}</Badge>}
                   </div>
                 </div>
@@ -87,7 +90,7 @@ export default async function ProfilePage() {
 
               {/* bio */}
               <p className="mt-5 text-sm leading-7 text-muted-foreground">
-                {profile.bio || "MĂ©g nincs bio. A beĂˇllĂ­tĂˇsoknĂˇl tudod megadni, mi jellemez tĂ©ged leginkĂˇbb."}
+                {profile.bio || "Még nincs bio. A beállításoknál tudod megadni, mi jellemez téged leginkább."}
               </p>
 
               {/* info rows */}
@@ -97,18 +100,18 @@ export default async function ProfilePage() {
                     <GraduationCap className="h-3.5 w-3.5" /> Szak
                   </span>
                   <span className="text-xs font-semibold text-foreground">
-                    {profile.program?.name ?? "Nincs beĂˇllĂ­tva"}
+                    {profile.program?.name ?? "Nincs beállítva"}
                   </span>
                 </div>
                 <div className="flex items-center justify-between py-2">
                   <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                    <Shield className="h-3.5 w-3.5" /> Tag Ăłta
+                    <Shield className="h-3.5 w-3.5" /> Tag óta
                   </span>
                   <span className="text-xs font-semibold text-foreground">{joinDate}</span>
                 </div>
                 <div className="flex items-center justify-between pt-2">
                   <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                    <TrendingUp className="h-3.5 w-3.5" /> HozzĂˇjĂˇrulĂˇs
+                    <TrendingUp className="h-3.5 w-3.5" /> Hozzájárulás
                   </span>
                   <span className="text-xs font-semibold text-foreground">{totalContributions} tartalom</span>
                 </div>
@@ -120,38 +123,38 @@ export default async function ProfilePage() {
                   href="/profile/settings"
                   className="inline-flex items-center gap-1.5 rounded-xl border border-border/60 bg-background/60 px-3 py-2 text-xs font-medium transition-colors hover:border-primary/40 hover:bg-muted"
                 >
-                  <Settings className="h-3.5 w-3.5" /> BeĂˇllĂ­tĂˇsok
+                  <Settings className="h-3.5 w-3.5" /> Beállítások
                 </Link>
                 <Link
                   href="/profile/progress"
                   className="inline-flex items-center gap-1.5 rounded-xl border border-border/60 bg-background/60 px-3 py-2 text-xs font-medium transition-colors hover:border-primary/40 hover:bg-muted"
                 >
-                  <TrendingUp className="h-3.5 w-3.5" /> HaladĂˇs
+                  <TrendingUp className="h-3.5 w-3.5" /> Haladás
                 </Link>
                 <Link
                   href="/profile/sessions"
                   className="inline-flex items-center gap-1.5 rounded-xl border border-border/60 bg-background/60 px-3 py-2 text-xs font-medium transition-colors hover:border-primary/40 hover:bg-muted"
                 >
-                  <Shield className="h-3.5 w-3.5" /> SessionĂ¶k
+                  <Shield className="h-3.5 w-3.5" /> Sessionök
                 </Link>
                 {(profile.role === "ADMIN" || profile.role === "MODERATOR") && (
                   <Link
                     href="/admin/reports"
                     className="inline-flex items-center gap-1.5 rounded-xl border border-purple-500/30 bg-purple-500/10 px-3 py-2 text-xs font-medium text-purple-600 transition-colors hover:bg-purple-500/15 dark:text-purple-400"
                   >
-                    <Shield className="h-3.5 w-3.5" /> ModerĂˇciĂł
+                    <Shield className="h-3.5 w-3.5" /> Moderáció
                   </Link>
                 )}
               </div>
             </CardContent>
           </Card>
 
-          {/* â”€â”€ Stat tiles â”€â”€ */}
+          {/* ── Stat tiles ── */}
           {[
-            { label: "Review", value: profile.reviews.length, icon: MessageSquare, accent: "bg-blue-500/10 border-blue-500/20", iconColor: "text-blue-500" },
-            { label: "ForrĂˇs", value: profile.resources.length, icon: FileText, accent: "bg-green-500/10 border-green-500/20", iconColor: "text-green-500" },
-            { label: "Vizsgatipp", value: profile.examTips.length, icon: Lightbulb, accent: "bg-amber-500/10 border-amber-500/20", iconColor: "text-amber-500" },
-            { label: "Mentett tĂˇrgy", value: profile.bookmarks.length, icon: BookMarked, accent: "bg-primary/10 border-primary/20", iconColor: "text-primary" },
+            { label: "Review",        value: profile.reviews.length,   icon: MessageSquare, accent: "bg-blue-500/10 border-blue-500/20",    iconColor: "text-blue-500" },
+            { label: "Forrás",        value: profile.resources.length, icon: FileText,      accent: "bg-green-500/10 border-green-500/20",   iconColor: "text-green-500" },
+            { label: "Vizsgatipp",    value: profile.examTips.length,  icon: Lightbulb,     accent: "bg-amber-500/10 border-amber-500/20",   iconColor: "text-amber-500" },
+            { label: "Mentett tárgy", value: profile.bookmarks.length, icon: BookMarked,    accent: "bg-primary/10 border-primary/20",       iconColor: "text-primary" },
           ].map((stat) => (
             <Card key={stat.label} className={`border ${stat.accent} bg-card/60`}>
               <CardContent className="flex flex-col gap-4 p-6">
@@ -166,13 +169,13 @@ export default async function ProfilePage() {
             </Card>
           ))}
 
-          {/* â”€â”€ Kredit progress card â”€â”€ */}
+          {/* ── Kredit progress card ── */}
           <Card className="col-span-full border-border/60 md:col-span-2 lg:col-span-2">
             <CardContent className="p-6">
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">KredithaladĂˇs</p>
-                  <p className="mt-0.5 font-heading text-xl font-bold">{profile.program?.name ?? "Szak nincs beĂˇllĂ­tva"}</p>
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Kredithaladás</p>
+                  <p className="mt-0.5 font-heading text-xl font-bold">{profile.program?.name ?? "Szak nincs beállítva"}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-heading text-3xl font-bold">{creditPct}%</p>
@@ -191,9 +194,9 @@ export default async function ProfilePage() {
               {/* sub-stats */}
               <div className="mt-4 grid grid-cols-3 gap-3">
                 {[
-                  { label: "TeljesĂ­tve", value: completedSubjects.length, sub: "tĂˇrgy" },
-                  { label: "Folyamatban", value: inProgressSubjects.length, sub: "tĂˇrgy" },
-                  { label: "KĂ¶telezĹ‘ vĂˇl.", value: requiredElectiveSubjects.length, sub: "tĂˇrgy" },
+                  { label: "Teljesítve",    value: completedSubjects.length,         sub: "tárgy" },
+                  { label: "Folyamatban",   value: inProgressSubjects.length,        sub: "tárgy" },
+                  { label: "Köt. vál. telj.", value: completedElectiveSubjects.length, sub: "tárgy" },
                 ].map((s) => (
                   <div key={s.label} className="rounded-2xl border border-border/60 bg-background/60 p-3 text-center">
                     <p className="font-heading text-2xl font-bold">{s.value}</p>
@@ -206,20 +209,20 @@ export default async function ProfilePage() {
                 href="/profile/progress"
                 className="mt-4 flex items-center justify-end gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                RĂ©szletes haladĂˇs <ChevronRight className="h-3.5 w-3.5" />
+                Részletes haladás <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </CardContent>
           </Card>
 
-          {/* â”€â”€ Activity feed â”€â”€ */}
+          {/* ── Activity feed ── */}
           <Card className="col-span-full border-border/60 lg:col-span-2">
             <CardContent className="p-6">
-              <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">Legfrissebb aktivitĂˇs</p>
+              <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">Legfrissebb aktivitás</p>
 
               {activityFeed.length === 0 ? (
                 <EmptyState
-                  title="MĂ©g nincs aktivitĂˇs"
-                  description="Ha Ă­rsz review-t, tippet vagy feltĂ¶ltesz forrĂˇst, itt rĂ¶gtĂ¶n lĂˇtni fogod."
+                  title="Még nincs aktivitás"
+                  description="Ha írsz review-t, tippet vagy feltöltesz forrást, itt rögtön látni fogod."
                 />
               ) : (
                 <div className="space-y-2">
@@ -252,11 +255,11 @@ export default async function ProfilePage() {
             </CardContent>
           </Card>
 
-          {/* â”€â”€ Bookmarks â”€â”€ */}
+          {/* ── Bookmarks ── */}
           {profile.bookmarks.length > 0 && (
             <Card className="col-span-full border-border/60">
               <CardContent className="p-6">
-                <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">Mentett tĂˇrgyak</p>
+                <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">Mentett tárgyak</p>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {profile.bookmarks.slice(0, 8).map((bm) => (
                     <Link
