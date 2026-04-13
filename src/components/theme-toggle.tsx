@@ -2,18 +2,14 @@
 
 import { Moon, Sun } from "lucide-react";
 
+import { applyThemePreference, type ExtendedPresetId } from "@/components/theme-hydrator";
 import { Button } from "@/components/ui/button";
-
-function applyTheme(theme: "light" | "dark") {
-  const root = document.documentElement;
-  root.classList.toggle("dark", theme === "dark");
-}
 
 export function ThemeToggle() {
   function toggleTheme() {
-    const nextTheme = document.documentElement.classList.contains("dark") ? "light" : "dark";
-    applyTheme(nextTheme);
-    window.localStorage.setItem("unisurvive-theme", nextTheme);
+    const isDark = document.documentElement.classList.contains("dark");
+    const preset = (window.localStorage.getItem("unisurvive-preset") ?? "default") as ExtendedPresetId;
+    applyThemePreference(preset, !isDark);
   }
 
   return (
